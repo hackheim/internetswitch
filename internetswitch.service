@@ -1,0 +1,16 @@
+[Unit]
+Description=internetswitch systemd service
+Before=systemd-user-sessions.service
+
+[Service]
+TimeoutStartSec=0
+
+ExecStart=/usr/bin/screen -dmS internetswitch bash -c '/home/pi/internetswitch/internetswitchloop.sh'
+User=root
+RemainAfterExit=yes
+
+ExecStop=/usr/bin/screen -S internetswitch -X quit
+User=root
+
+[Install]
+WantedBy=multi-user.target
