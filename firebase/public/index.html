@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome to Firebase Hosting</title>
+    <style media="screen">
+      body {
+        font-family: Roboto, Arial, sans-serif;
+        background: #ECEFF1;
+        color: rgba(0,0,0,0.87);
+      }
+
+      a {
+        color: rgb(3,155,229);
+      }
+
+      #message {
+        max-width: 400px;
+        margin: 40px auto;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 2px 1px -1px rgba(0,0,0,0.12);
+        border-radius: 2px;
+        background: white;
+        padding: 16px 24px;
+      }
+
+      #message h1 {
+        font-size: 22px;
+        font-weight: 500;
+        text-align: center;
+        margin: 10px;
+      }
+
+      #message p {
+        font-weight: 300;
+        line-height: 150%;
+      }
+
+      #message ul {
+        margin: 16px;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyDKBAvTRwdxtzjQvQ3T6zeW-uc4Emzwfr8",
+    authDomain: "internetswitch-18792.firebaseapp.com",
+    databaseURL: "https://internetswitch-18792.firebaseio.com",
+    storageBucket: "",
+};
+
+firebase.initializeApp(config);
+var database = firebase.database();
+
+database.ref('/mobile_alarm_payload/unit_216/status').on('value', function(data) {
+    if (data.val()==="enabled")
+    {
+        $('#message').css('background-color', 'red');
+    }
+    else
+    {
+        $('#message').css('background-color', 'white');
+    }
+});
+
+database.ref('/mobile_alarm_payload').on('value', function(data) {
+    //document.getElementById("message").innerHTML = "<h1>"+data.key+"</h1><p>gps: "+data.val().gps+"</p><p>status: "+data.val().status+"</p>"; 
+    //console.log(data);
+
+    data.forEach(function(unit) {
+        var element = document.createElement('li');
+        $(element).attr("id", "unit"+unit.key);
+        $(element).text(unit.key);
+
+        var list = document.createElement('ul');
+        $(list).attr("id", "value"+unit.key);
+        $(element).append(list);
+
+        $('#message').html(element);
+
+        unit.forEach(function(value) {
+            var item = document.createElement('li');
+            $(item).text(value.key+": "+value.val());
+            $('#'+"value"+unit.key).append(item);
+        });
+    })
+
+    $(data.val()).each(function(index, item) {
+        var subelement = document.createElement('li');
+    });
+});
+</script>
+    <ul id="message" style="font-size: 20px">
+        
+    </ul>
+  </body>
+</html>
